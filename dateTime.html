@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			width: 320px;
+			height: 100px;
+			margin: 300px auto;
+		}
+		.dateCon, .timeCon{
+			height: 32px;
+			font-size: 14px;
+			line-height: 32px;
+			text-align: center;
+			color: #333333;
+			text-align: center;
+			border: 1px solid #e5e5e5;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+		}
+		.dateCon{
+			width: 120px;
+			float: left;
+		}
+		.timeCon{
+			width: 80px;
+			float: left;
+			margin-left: 20px;
+		}
+		.choose{
+			width: 80px;
+			height: 30px;
+			font-size: 14px;
+			line-height: 30px;
+			text-align: center;
+			color: #ffffff;
+			background: #209EEA;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			float: right;
+			margin-top: 2px;
+			cursor: pointer;
+			
+		}
+		.bg{
+			width: 100%;
+		    height: 100%;
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    background-color: #ABABAB;
+		    opacity: 0.5;
+		    filter: alpha(opacity=50);
+		    z-index: 10;
+			display: none;
+		}
+		.setTime{
+			width: 420px;
+			height: 220px;
+			background: #FFFFFF;	
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			margin-top: -115px;
+			margin-left: -175px;
+			z-index: 20;
+			display: none;	
+		}
+		.setTime .setTime_close{
+			width: 25px;
+			height: 30px;
+			font-size: 30px;
+			color: rgb(102, 102, 102);
+			text-align: center;
+			position: absolute;
+			top: -5px;
+			right: 2px;
+			cursor: pointer;
+		}
+		.setTime .setTime_title{
+			height: 50px;
+			background-color: #F5F5F5;
+			font-size: 18px;
+			color: rgb(102, 102, 102);
+			line-height: 50px;
+			font-weight: bold;
+			text-align: center;
+		}
+		.setTime .setTime_tell{
+			width: 384px;
+			height: 24px;
+			padding: 16px 18px;
+			font-size: 14px;
+			color: rgb(102, 102, 102);
+			line-height: 20px;
+			text-align: center;
+		}
+		.setTime .setTime_set{
+			width: 222px;
+			margin-top: 5px;
+			padding: 0 100px;
+		}
+		.setTime .setTime_set input{
+			height: 32px;
+			font-size: 14px;
+			line-height: 32px;
+			color: #333333;
+			text-align: center;
+			border: 1px solid #E5E5E5;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+		}
+		.setTime .setTime_set .setTime_set_date{
+			margin-right: 16px;
+		}
+		.setTime .setTime_btn{
+			width: 420px;
+			height: 46px;
+			margin-top: 26px;
+		}
+		.setTime .setTime_btn p{
+			width: 60px;
+			height: 28px;
+			font-size: 14px;
+			line-height: 28px;
+			color: #FFFFFF;
+			text-align: center;
+			background-color: #209EEA;
+			margin: 0 auto;
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.setTime_set_date{
+			width: 112px;
+		}
+		.setTime_set_time{
+			width: 82px;
+		}
+	</style>
+	
+	<link rel="stylesheet" type="text/css" href="datetime/datedropper.css"/>
+	<link rel="stylesheet" type="text/css" href="datetime/timedropper.min.css"/>
+	
+	<script src="jquery-1.10.1.min.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="datetime/datedropper.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="datetime/timedropper.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div class="box">
+		<div class="dateCon"></div>
+		<div class="timeCon"></div>
+		<div class="choose">请点击选择</div>
+	</div>
+	
+	<div class="setTime">
+		<div class="setTime_close">×</div>
+		<div class="setTime_title">选择时间</div>
+		<div class="setTime_tell">
+			请根据您的需要来设定时间。
+		</div>
+		<div class="setTime_set">
+			<input class="setTime_set_date" type="text" id="date_set">
+			<input class="setTime_set_time" type="text" id="time_set">
+		</div>
+		<div class="setTime_btn">
+			<p>确定</p>
+		</div>	        
+	</div> 
+	
+	<div class="bg"></div>   
+</body>
+</html>
+
+<script type="text/javascript">
+	
+	$(function(){
+		
+		$('#date_set').dateDropper({
+            animate: false,
+            format: 'Y-m-d',
+            maxYear: new Date().getFullYear() + 1,
+            minYear: new Date().getFullYear()
+            });
+        
+        $("#time_set").timeDropper({
+            meridians: false,
+            format: 'HH:mm'
+        });
+        
+        $(".choose").click(function(){
+        	timeFormat(1);
+        	$(".bg").show();
+        	$(".setTime").show();
+        });
+        
+        $(".setTime_close").click(function(){
+        	$(".bg").hide();
+        	$(".setTime").hide();
+        });
+        
+        $(".setTime_btn").find("p").click(function(){
+        	var dateNum = parseInt($("#date_set").val().split("-").join(""));
+			var timeNum = parseInt($("#time_set").val().split(":").join(""));
+			timeFormat(2);
+			if((dateNum > dateCon) || (dateNum == dateCon && timeNum >= timeCon)){
+		    	$(".dateCon").html($("#date_set").val());
+		    	$(".timeCon").html($("#time_set").val());
+		    	$(".bg").hide();
+	        	$(".setTime").hide();
+        	}else{
+        		alert("您选择的时间已成为历史！请重新选择吧。");
+        	}
+        });
+        
+        var dateCon = 0;
+	    var timeCon = 0;
+        function timeFormat(type){
+	        var date=new Date();
+			var y=date.getFullYear();
+			var mo=date.getMonth() + 1;
+			var d=date.getDate();
+			var h=date.getHours();
+			var m=date.getMinutes();
+			if(mo < 10){
+				mo = "0" + mo;
+			}
+			if(d < 10){
+				d = "0" + d;
+			}
+			if(h < 10){
+				h = "0" + h;
+			}
+			if(m < 10){
+				m = "0" + m;
+			}
+			if(type == 1){
+				$("#date_set").val(y + "-" + mo + "-" + d);
+				$("#time_set").val(h + ":" + m);	
+			}else{
+				dateCon = parseInt(y+""+mo+""+d);
+				timeCon = parseInt(h+""+m);
+			}			
+	    };
+	    
+	})
+	
+</script>
